@@ -1,16 +1,19 @@
-FROM node:25-alpine
+FROM node:25-slim
 
 WORKDIR /app
 
-RUN npm install -g pnpm
+RUN corepack enable
 
+# cache melhor
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile --ignore-scripts=false
+
+# agora copia o resto
 COPY . .
 
-RUN pnpm install
+RUN pnpm build
 
 EXPOSE 80
 EXPOSE 443
-
-RUN pnpm build
 
 CMD ["pnpm", "start"]
