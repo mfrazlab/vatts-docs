@@ -2,7 +2,7 @@ FROM node:25-slim
 
 WORKDIR /app
 
-RUN corepack enable
+RUN npm i -g pnpm
 
 # cache melhor
 COPY package.json pnpm-lock.yaml* ./
