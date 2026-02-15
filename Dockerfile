@@ -11,4 +11,6 @@ RUN pnpm install
 EXPOSE 80
 EXPOSE 443
 
+RUN pnpm build
+
 CMD ["pnpm", "start"]

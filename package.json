@@ -5,23 +5,24 @@
   "scripts": {
     "start": "vatts start",
     "dev": "vatts dev",
-    "export": "vatts export"
+    "export": "vatts export",
+    "build": "vatts build"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.18",
-    "autoprefixer": "^10.4.23",
+    "autoprefixer": "^10.4.24",
     "lucide-vue-next": "^0.563.0",
-    "marked": "^17.0.1",
+    "marked": "^17.0.2",
     "postcss": "^8.5.6",
     "prismjs": "^1.30.0",
     "tailwindcss": "^4.1.18",
     "ts-node": "^10.9.2",
-    "vatts": "^2.0.2",
-    "vue": "^3.5.27"
+    "vatts": "2.1.0-canary.1",
+    "vue": "^3.5.28"
   },
   "devDependencies": {
-    "@types/node": "^25.0.10",
-    "@types/prismjs": "^1.26.5",
+    "@types/node": "^25.2.3",
+    "@types/prismjs": "^1.26.6",
     "typescript": "^5.9.3"
   }
 }
