@@ -13,7 +13,6 @@ import { importServer, Link, VattsImage } from "vatts/vue";
 // Componentes
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
-console.log(window.location)
 // Server RPC
 const api = importServer<typeof import("../backend/helper")>("../backend/helper");
 const { PackageVersion } = api;

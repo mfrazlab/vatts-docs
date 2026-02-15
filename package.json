@@ -17,7 +17,7 @@
     "prismjs": "^1.30.0",
     "tailwindcss": "^4.1.18",
     "ts-node": "^10.9.2",
-    "vatts": "2.1.0-canary.1",
+    "vatts": "2.1.0-canary.2",
     "vue": "^3.5.28"
   },
   "devDependencies": {
