@@ -6,7 +6,7 @@ RUN npm i -g pnpm
 
 # cache melhor
 COPY package.json pnpm-lock.yaml* ./
-RUN pnpm install --frozen-lockfile --ignore-scripts=false
+RUN pnpm install --ignore-scripts=false
 
 # agora copia o resto
 COPY . .
