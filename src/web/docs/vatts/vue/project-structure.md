@@ -1,4 +1,3 @@
-
 # Project Structure  - Vue
 
 Understanding how Vatts.js organizes your files is essential for building clean, efficient, and scalable applications.
@@ -11,31 +10,33 @@ This guide explains the folder structure, special files, and conventions used th
 
 A Vue Vatts.js project follows this structure:
 
-```  
-my-project/  
-├── src/  
-│   ├── web/  
-│   │   ├── layout.vue  
+```
+my-project/
+├── src/
+│   ├── web/
+│   │   ├── layout.vue
 │   │   ├── notFound.vue
-│   │   ├── globals.css  
-│   │   ├── routes/  
-│   │   │   ├── index.vue
-│   │   │   ├── about.vue
-│   │   │   └── blog/  
-│   │   │       └── id.vue
-│   │   └── components/  
+│   │   ├── globals.css
+│   │   ├── page.vue
+│   │   ├── about/
+│   │   │   └── page.vue
+│   │   ├── blog/
+│   │   │   ├── page.vue
+│   │   │   └── [id]/
+│   │   │       └── page.vue
+│   │   └── components/
 │   │       └── Header.vue
-│   ├── backend/  
-│   │   └── routes/  
-│   │       ├── api.ts  
-│   │       └── users.ts  
-│   └── vattsweb.ts  
-├── public/  
-│   ├── favicon.ico  
-│   └── images/  
-├── vatts.config.ts  
-├── tsconfig.json  
-└── package.json  
+│   ├── backend/
+│   │   └── routes/
+│   │       ├── api.ts
+│   │       └── users.ts
+│   └── vattsweb.ts
+├── public/
+│   ├── favicon.ico
+│   └── images/
+├── vatts.config.ts
+├── tsconfig.json
+└── package.json
 ```  
   
 ---  
@@ -63,31 +64,14 @@ The `/src/web` directory contains all frontend-related code.
 
 ### Frontend Routing Structure
 
-Vatts supports two different routing strategies, which affects how you structure your files.
-
-#### 1. `RouteConfig` (Default)
-
-By default, routes are defined in `/src/web/routes`. In this system, you explicitly export a `RouteConfig` object from each file to define a route's pattern and component.
-
-| File                         | Route           |  
-|------------------------------|-----------------|  
-| `routes/index.vue`           | `/`             |  
-| `routes/about.vue`           | `/about`        |  
-| `routes/blog/index.vue`      | `/blog`         |  
-| `routes/blog/id.vue`       | `/blog/:id`     |  
-| `routes/user/profile.vue`    | `/user/profile` |  
-
-To learn how to register routes (patterns, dynamic params, metadata, etc.), see the **Routing** guide: `/docs/vatts/routing`.
-
-#### 2. `pathRouter` (File-based)
-
-Alternatively, you can enable `pathRouter: true` in `vatts.config.ts`. This activates a file-system-based routing convention where the file structure inside `/src/web/` directly maps to URL routes.
+Vatts uses file-based routing in `/src/web`, similar to Next.js. The file and folder structure maps directly to URL paths.
 
 - `/src/web/page.vue` -> `/`
 - `/src/web/about/page.vue` -> `/about`
+- `/src/web/blog/page.vue` -> `/blog`
 - `/src/web/blog/[id]/page.vue` -> `/blog/:id`
 
-This approach is more conventional if you prefer a file-system-driven routing experience.
+This approach is simple and keeps routes colocated with your pages.
   
 ---  
 
@@ -215,7 +199,6 @@ Used to:
 - Register plugins and middleware
 - Control runtime and build settings
 - Customize development and production behavior
-- Enable `pathRouter` for file-based routing
 
 Any server-level customization belongs here.
   
