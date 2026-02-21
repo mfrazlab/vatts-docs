@@ -13,7 +13,6 @@ import { importServer, Link, VattsImage } from "vatts/vue";
 // Componentes
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
-console.log(window.location)
 // Server RPC
 const api = importServer<typeof import("../backend/helper")>("../backend/helper");
 const { PackageVersion } = api;
@@ -131,7 +130,7 @@ export function generateMetadata(): Metadata {
             class="vatts-reveal vatts-reveal-fade inline-block px-3 py-1 rounded-full border border-gray-500/20 bg-gray-500/5 text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-8"
             :style="{ '--d': '0ms' }"
         >
-          Framework v{{ version }} {{ version.includes("alpha") ? "" : 'Stable' }}
+          Framework v{{ version }} {{ version.includes("canary") ? "" : 'Stable' }}
         </div>
 
         <h1

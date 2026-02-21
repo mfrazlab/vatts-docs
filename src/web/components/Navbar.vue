@@ -51,7 +51,6 @@ const getLinkClasses = (href: string, external: boolean) => {
 
 // Watcher para detectar mudanças de rota
 watch(() => typeof window !== 'undefined' ? window.location.href : '', (newHref) => {
-  console.log('MUDOU')
   if (typeof window !== 'undefined') {
     currentPath.value = window.location.pathname;
   }

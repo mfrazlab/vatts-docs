@@ -1,120 +1,136 @@
 # Routing in Vatts.js - Vue
 
-Vatts.js has a flexible routing system for both **frontend** and **backend**. This guide explains how routes work, how to create route files, and what patterns you can use.
+Vatts.js uses file-based routing for the **frontend** and configuration-based routing for the **backend**. This guide explains how routes work, how to create route files, and what patterns you can use.
 
 ---
 
-## Routing Strategies
+## Frontend Routing (PathRouter)
 
-Vatts provides two routing strategies for the frontend:
+Frontend routes are created automatically from the file structure in `/src/web`. You do not need to register routes manually.
 
-1.  **RouteConfig (Default)**: This strategy is based on explicitly defining route configurations in files located in `/src/web/routes`. Each file exports a `RouteConfig` object that specifies the URL pattern and the component to render.
-2.  **PathRouter (File-based)**: This is an alternative, file-system-based routing strategy. When `pathRouter: true` is set in your `vatts.config.ts` (or `.js`), Vatts will automatically create routes based on the file structure in `/src/web/`. For example, `/src/web/page.vue` maps to the `/` route, and `/src/web/blog/[id]/page.vue` maps to the `/blog/:id` route.
+### File and Folder Mapping
 
-This guide primarily focuses on the `RouteConfig` strategy. For more details on `pathRouter`, see the file-based routing section below.
+- `/src/web/page.vue` -> `/`
+- `/src/web/about/page.vue` -> `/about`
+- `/src/web/blog/[id]/page.vue` -> `/blog/:id`
 
----
+### Dynamic Segments
 
-## Frontend Routes with `RouteConfig`
+Vatts.js supports the following dynamic segment formats in folder names:
 
-When using the default `RouteConfig` strategy, frontend routes live in `/src/web/routes`.
-
-> Important: **creating a route file is not enough by itself**.
->
-> Unlike fully file-based frameworks, in Vatts.js you typically **must register your routes** so they become active.
-
-### Basic Route
-
-The simplest route exports a `RouteConfig` with a `pattern` and a `component`. You can use `.vue` files.
-
-```vue
-<script lang="ts">
-   import type { RouteConfig } from "vatts/vue";
-
-   export const config: RouteConfig = {
-      pattern: '/',
-      component: undefined,
-      generateMetadata: () => ({
-         title: 'Vatts.js | Home'
-      })
-   };
-</script>
-<template>
-   <div class="flex min-h-screen flex-col items-center justify-center bg-gray-950 p-4 text-center">
-      <div class="group relative">
-         <div class="absolute -inset-1 rounded-lg bg-gradient-to-r from-purple-600 to-cyan-400 opacity-25 blur transition duration-500 group-hover:opacity-50"></div>
-         <div class="relative rounded-lg bg-gray-900 px-8 py-6 ring-1 ring-gray-800">
-            <h1 class="mb-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-               Hello <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">World</span>
-            </h1>
-
-            <p class="text-sm font-medium text-gray-400">
-               Running with <span class="text-gray-200">Vatts.js</span>
-            </p>
-         </div>
-      </div>
-   </div>
-</template>
-```
-
-### Dynamic Routes
-
-Vatts.js supports several kinds of dynamic params in the `pattern`:
-
-| Pattern        | Example File | Matches                | Does Not Match |
-|----------------|--------------|------------------------|----------------|
-| `[param]`      | `id.vue`     | `/1`, `/2`             | `/`, `/1/2`    |
-| `[[param]]`    | `lang.vue`   | `/`, `/en`, `/pt`      | `/en/us`       |
-| `[...param]`   | `param.vue`  | `/a`, `/a/b`, `/a/b/c` | `/`            |
-| `[[...param]]` | `param.vue`  | `/`, `/a`, `/a/b/c`    | N/A            |
+| Segment         | Matches                | Does Not Match |
+|-----------------|------------------------|----------------|
+| `[param]`       | `/1`, `/2`             | `/`, `/1/2`    |
+| `[[param]]`     | `/`, `/en`, `/pt`      | `/en/us`       |
+| `[...param]`    | `/a`, `/a/b`, `/a/b/c` | `/`            |
+| `[[...param]]`  | `/`, `/a`, `/a/b/c`    | N/A            |
 
 #### Examples
 
 1. **Required Parameter** (`[param]`):
 
-```vue
-<script setup>
-   // Definindo a prop que vem do seu roteador (Vatts.js)
-   const props = defineProps({
-      params: {
-         type: Object,
-         default: () => ({})
-      }
-   });
-   
-   console.log('Server parameter:', props.params.server);
-</script>
-<script>
-   export const config = {
-      pattern: '/[server]',
-      component: undefined,
-      generateMetadata: () => ({
-         title: 'Vatts.js | Home'
-      })
-   };
-</script>
-<template>
-   <h1>Hello {{ props.params.server || 'World' }}</h1>
-</template>
+```
+/src/web/blog/[id]/page.vue -> /blog/:id
 ```
 
----
+2. **Optional Parameter** (`[[param]]`):
 
-## File-based Routing with `pathRouter`
+```
+/src/web/[[lang]]/about/page.vue -> /:lang?/about
+```
 
-If you prefer a file-system-based routing convention, you can enable the `pathRouter` option in your `vatts.config.ts` or `vatts.config.js`:
+3. **Catch-all Routes** (`[...param]`):
+
+```
+/src/web/docs/[...slug]/page.vue -> /docs/*
+```
+
+4. **Optional Catch-all Routes** (`[[...param]]`):
+
+```
+/src/web/[[...path]]/page.vue -> /* (also matches /)
+```
+
+### Example Page
+
+```vue
+<!-- src/web/blog/[id]/page.vue -->
+<template>
+    <main>
+        <h1>Blog Post {{ props.params.id }}</h1>
+        <p>This is a dynamic route with param: {{ props.params.id }}</p>
+    </main>
+</template>
+
+<script setup lang="ts">
+import { defineProps } from "vue";
+
+const props = defineProps({
+    params: {
+        type: Object,
+        default: () => ({})
+    }
+});
+</script>
+<script lang="ts">
+   import { Metadata } from "vatts/vue";
+   
+   export function generateMetadata(): Metadata {
+      return {
+         title: `Blog Post ${props.params.id} | Vatts.js`,
+         description: `Read the blog post with ID ${props.params.id}`,
+         keywords: ["blog", "vatts", props.params.id]
+      };
+   }
+</script>
+```
+
+### Metadata Interface
+
+The `Metadata` interface allows you to define SEO and document metadata:
 
 ```ts
-// vatts.config.ts
-export default {
-  pathRouter: true,
-};
+export interface Metadata {
+    title?: string;
+    description?: string;
+    keywords?: string | string[];
+    author?: string;
+    favicon?: string;
+    viewport?: string;
+    themeColor?: string;
+    canonical?: string;
+    robots?: string;
+    openGraph?: {
+        title?: string;
+        description?: string;
+        type?: string;
+        url?: string;
+        image?: string | {
+            url: string;
+            width?: number;
+            height?: number;
+            alt?: string;
+        };
+        siteName?: string;
+        locale?: string;
+    };
+    twitter?: {
+        card?: 'summary' | 'summary_large_image' | 'app' | 'player';
+        site?: string;
+        creator?: string;
+        title?: string;
+        description?: string;
+        image?: string;
+        imageAlt?: string;
+    };
+    language?: string;
+    charset?: string;
+    appleTouchIcon?: string;
+    manifest?: string;
+    other?: Record<string, string>;
+    scripts?: Record<string, Record<string, string>>;
+}
 ```
-
-When `pathRouter` is enabled, Vatts will automatically create routes based on the file structure in `/src/web/`.
-
--   A file at `/src/web/page.vue` will correspond to the `/` URL path.
--   A file at `/src/web/blog/[id]/page.vue` will correspond to the `/blog/:id` URL path.
 
 ---
 
@@ -247,37 +263,3 @@ const route: BackendRouteConfig = {
 
 export default route;
 ```
-
----
-
-## Best Practices
-
-### Frontend Routes
-
-1. **Organization**
-   - Group related routes in folders
-   - Keep components separated from routes
-
-2. **Metadata**
-   - Always provide metadata for SEO
-   - Use dynamic metadata based on params
-
-3. **Parameters**
-   - Use descriptive parameter names
-   - Validate parameters when needed
-
-### Backend Routes
-
-1. **API Design**
-   - Follow RESTful conventions
-   - Use appropriate HTTP methods
-   - Return consistent response structures
-
-2. **Security**
-   - Always validate input
-   - Handle errors gracefully
-
-3. **WebSockets**
-   - Clean up resources on disconnect
-   - Implement heartbeat mechanisms
-   - Handle reconnection scenarios

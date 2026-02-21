@@ -41,11 +41,6 @@ export interface VattsConfig {
     };
 
     /**
-     * Enable or disable path-based routing. If true, uses file/folder structure for routing.
-     */
-    pathRouter?: boolean;
-
-    /**
      * Maximum number of headers allowed per request.
      */
     maxHeadersCount?: number;
@@ -173,11 +168,6 @@ Configures HTTPS and HTTP/3 (QUIC) support for secure connections.
 
 ---
 
-### `pathRouter`
-**Type:** `boolean` *(optional)*  
-If `true`, enables file-system-based routing (pages and endpoints are mapped to files/folders). If `false`, disables this feature.  
-
----
 
 ### Advanced Server Options
 
@@ -264,7 +254,6 @@ const vattsConfig: VattsConfigFunction = (phase, { defaultConfig }) => {
     return {
         ...defaultConfig,
         port: 3000,
-        pathRouter: true,
         // Add more options as needed
     };
 };
