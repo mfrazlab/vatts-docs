@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import {
-  Zap, Shield, Globe, Box, Wrench, Github,
-  Search, X, Cpu, Layers, ArrowRight,
-  Terminal, Palette, Wifi, Code, Network,
+  Zap, Shield, Globe, Box, Github,
+  Search, Cpu, Layers,
+  Terminal, Wifi, Code, Network,
   Server, Gauge // Ícones novos para representar Go/Server e Performance
 } from 'lucide-vue-next';
 
@@ -11,14 +11,12 @@ import {
 import { importServer, Link, VattsImage } from "vatts/vue";
 
 // Componentes
-import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 // Server RPC
 const api = importServer<typeof import("../backend/helper")>("../backend/helper");
 const { PackageVersion } = api;
 
 // State
-const isSearchOpen = ref(false);
 const version = ref("1.0.0");
 const primaryColor = "#a8a8a8";
 
@@ -35,17 +33,6 @@ onMounted(async () => {
 });
 
 // Particles
-const particles = computed(() =>
-    Array.from({ length: 60 }).map((_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      duration: 3 + Math.random() * 5,
-      delay: i * 0.07,
-      size: Math.random() < 0.12 ? 2 : 1,
-      opacity: 0.15 + Math.random() * 0.45,
-    }))
-);
 
 // Refs para animações
 const heroTitle = ref(null);
