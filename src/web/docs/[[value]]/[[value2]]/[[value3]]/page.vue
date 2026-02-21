@@ -143,8 +143,21 @@ const getNavigationPages = (currentId: string) => {
 
 const navigateToPage = (itemId: string, newFramework?: string) => {
   const targetFramework = newFramework || framework.value;
-  const newUrl = `/docs/${brand.value}/${targetFramework}/${itemId}`;
-  router.push(newUrl)
+  let newUrl = `/docs/${brand.value}/${itemId}`;
+  if (isFrameworkParam.value || newFramework) {
+    newUrl = `/docs/${brand.value}/${targetFramework}/${itemId}`;
+  }
+
+  // Update URL without reloading the page
+  if (typeof window !== 'undefined') {
+    window.history.pushState({}, '', newUrl);
+  }
+
+  // Update reactive state to trigger content change
+  if (newFramework && newFramework !== framework.value) {
+    framework.value = newFramework as 'react' | 'vue';
+  }
+  activeSection.value = itemId;
 };
 
 
@@ -169,9 +182,47 @@ watch([activeSection, framework], async () => {
     if (typeof window !== 'undefined') {
       await nextTick();
       Prism.highlightAll();
+
+      // Smooth scroll to top when content changes
+      if(window.scrollTo) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   }
 }, { immediate: true });
+
+// Handle browser back/forward buttons
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    const handlePopState = () => {
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      // pathParts: ['docs', 'vatts', 'react|vue?', 'page-id']
+
+      if (pathParts.length >= 3) {
+        const possibleFramework = pathParts[2];
+        const possiblePageId = pathParts[3];
+
+        // Check if third part is a framework
+        if (possibleFramework === 'react' || possibleFramework === 'vue') {
+          framework.value = possibleFramework;
+          if (possiblePageId) {
+            activeSection.value = possiblePageId;
+          }
+        } else {
+          // Third part is the page ID
+          activeSection.value = possibleFramework;
+        }
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }
+});
 
 </script>
 

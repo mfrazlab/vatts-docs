@@ -86,7 +86,7 @@ onUnmounted(() => {
       placeholder="Search documentation..."
   />
 
-  <nav class="sticky top-0 z-50 w-full border-b border-white/[0.05] bg-[#0d0d0d]/80 backdrop-blur-md">
+  <nav class="sticky top-0 z-50 w-full border-b border-white/10 bg-black/60 backdrop-blur-2xl shadow-lg">
     <div class="flex h-16 items-center justify-between px-6 max-w-7xl mx-auto">
       <div class="flex items-center gap-6">
         <Link href="/" class="relative group cursor-pointer flex items-center gap-3 mr-3">
@@ -94,7 +94,7 @@ onUnmounted(() => {
               src="/logo-all-white.png"
               height="32px"
               alt="Vatts"
-              class="relative rounded-lg"
+              class="relative rounded-lg transition-transform group-hover:scale-105"
           />
         </Link>
 
@@ -122,18 +122,18 @@ onUnmounted(() => {
       <div class="flex items-center gap-4">
         <button
             @click="isSearchOpen = true"
-            class="hidden md:flex items-center gap-3 bg-white/[0.05] border border-white/10 rounded-md px-3 py-1.5 text-sm text-slate-400 hover:text-white hover:border-[#ff6b35]/30 transition-all w-64 group"
+            class="hidden md:flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-2 text-sm text-slate-300 hover:text-white hover:border-white/30 hover:bg-white/15 transition-all w-64 group shadow-lg"
         >
           <span class="flex-1 text-left">Search docs...</span>
-          <div class="flex gap-1 text-[10px] opacity-50">
-            <kbd class="bg-black/20 border border-white/10 px-1.5 rounded">Ctrl</kbd>
-            <kbd class="bg-black/20 border border-white/10 px-1.5 rounded">K</kbd>
+          <div class="flex gap-1 text-[10px] opacity-70">
+            <kbd class="bg-black/30 border border-white/20 px-1.5 py-0.5 rounded">Ctrl</kbd>
+            <kbd class="bg-black/30 border border-white/20 px-1.5 py-0.5 rounded">K</kbd>
           </div>
         </button>
 
         <a
             href="https://github.com/mfrazlab/vatts.js"
-            class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full"
+            class="text-slate-400 hover:text-white transition-all p-2.5 hover:bg-white/10 rounded-lg backdrop-blur-sm"
             target="_blank"
             rel="noreferrer"
         >
