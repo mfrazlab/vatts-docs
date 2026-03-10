@@ -87,7 +87,7 @@ onUnmounted(() => {
   />
 
   <nav class="sticky top-0 z-50 w-full border-b border-white/10 bg-black/60 backdrop-blur-2xl shadow-lg">
-    <div class="flex h-16 items-center justify-between px-6 max-w-7xl mx-auto">
+    <div class="flex h-16 items-center justify-between px-6 max-w-8xl mx-auto">
       <div class="flex items-center gap-6">
         <Link href="/" class="relative group cursor-pointer flex items-center gap-3 mr-3">
           <VattsImage
