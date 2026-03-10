@@ -113,9 +113,6 @@ export function generateMetadata(): Metadata {
       <div class="grid-corner-circle circle-top-left"> </div>
       <div class="grid-corner-circle circle-bottom-right" > </div>
 
-      <!-- Enhanced ambient glow -->
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-white/5 rounded-full blur-[120px] pointer-events-none"></div>
-
       <div class="relative z-10 max-w-5xl mx-auto">
         <div
             class="vatts-reveal vatts-reveal-fade inline-block px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-8 shadow-lg"
